@@ -15,4 +15,15 @@ Rails.application.routes.draw do
       get :export
     end
   end
+  resources :comments, only: [:create, :destroy] do
+    collection do
+      get :top
+    end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :movies, only: [:index, :show]
+    end
+  end
 end

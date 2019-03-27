@@ -1,2 +1,22 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.movie-avatar {
+  max-width: 150px;
+}
+
+.movie-description {
+  margin-top: 30px;
+}
+
+.comments textarea {
+  width: 100%;
+}
+
+.comments {
+  margin-bottom: 30px;
+}
+
+.comments .name {
+  font-weight: bold;
+}

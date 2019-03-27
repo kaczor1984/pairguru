@@ -1,5 +1,31 @@
 %h1= @movie.title
 .jumbotron
-  = @movie.description
+  .row
+    .col-sm-3
+      = image_tag @movie.avatar, alt: 'movie-avatar', class: 'movie-avatar'
+      = @movie.rating
+    .col-sm-9
+      = @movie.plot
+  .row.movie-description
+    = @movie.description
+- if user_signed_in? && @movie.comments.of_user(current_user.id).empty?
+  = form_for :comments, url: comments_path, remote: true,
+                        html: { class: 'comments' } do |f|
+    = f.hidden_field :movie_id, value: @movie.id
+    = f.text_area :comment
+    .submit
+      = f.submit class: 'btn btn-sm btn-default'
+
+.comments
+  - @movie.comments.each do |comment|
+    .comment{class: comment.id}
+      %span.name
+        = comment.user.name
+      = comment.comment
+      = link_to comment_path(comment), method: :delete, remote: true do
+        = octicon 'x', class: 'octicon', 'aria-label': 'icon'
+
+
 - if user_signed_in?
   %p= link_to 'Email me details about this movie', send_info_movie_path(@movie), class: 'btn btn-sm btn-default'
+
