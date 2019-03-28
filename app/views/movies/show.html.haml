@@ -9,7 +9,7 @@
   .row.movie-description
     = @movie.description
 - if user_signed_in? && @movie.comments.of_user(current_user.id).empty?
-  = form_for :comments, url: comments_path, remote: true,
+  = form_for :comments, url: comments_path,
                         html: { class: 'comments' } do |f|
     = f.hidden_field :movie_id, value: @movie.id
     = f.text_area :comment
@@ -22,7 +22,7 @@
       %span.name
         = comment.user.name
       = comment.comment
-      = link_to comment_path(comment), method: :delete, remote: true do
+      = link_to comment_path(comment), method: :delete do
         = octicon 'x', class: 'octicon', 'aria-label': 'icon'
 
 

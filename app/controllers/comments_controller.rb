@@ -5,14 +5,15 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = Comment.create(comment_params.merge(user_id: current_user.id))
-    render js: "window.location.reload();"
+    Comment.create(comment_params.merge(user_id: current_user.id))
+    redirect_to movie_path(comment_params[:movie_id])
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
-    @comment.destroy
-    render js: "window.location.reload();"
+    comment = Comment.find(params[:id])
+    movie = comment.movie
+    comment.destroy
+    redirect_to movie_path(movie.id)
   end
 
   def comment_params
