@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   def top
-    @comments = Comment.by_user.most_used(10).
-      where(created_at: (7.days.ago..DateTime.now))
+    @comments = Comment.includes(:user).by_user.most_used(10).
+      where(created_at: (7.days.ago..DateTime.now)).order('count DESC')
   end
 
   def create
