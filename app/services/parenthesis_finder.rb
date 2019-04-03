@@ -6,7 +6,15 @@ class ParenthesisFinder
 
   def call
     parens = get_parenthesis
+    return "two parens" if parens.key("(") == (parens.key(")")||0)-1 ||
+                           parens.key("[") == (parens.key("]")||0)-1 ||
+                           parens.key("{") == (parens.key("}")||0)-1
     new_title = add_parens parens
+  end
+
+  def brackets
+    title_copy = title.dup
+    call.remove(title_copy)
   end
 
   private
@@ -23,10 +31,17 @@ class ParenthesisFinder
   def add_parens parens
     left = []
     while parens.length
-      object = parens.shift&.last
+      object = parens.shift
+      position, object = object&.first, object&.last
       break if object.nil?
       object = parenthesis[object]
-      if parens.reject!{|_,v| v == object}.nil?
+      first, result = true, false
+      if parens.reject! do |k,v|
+            first = false if result
+            result = v.in?(["(","[","{"]) ?
+              (position > k && v == object) : (position < k && v == object)
+            result && first
+          end.nil?
         left << object
       end
     end
